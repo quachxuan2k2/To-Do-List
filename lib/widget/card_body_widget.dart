@@ -1,19 +1,19 @@
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 
-
 class CardBody extends StatelessWidget {
   CardBody(
       {Key? key,
       required this.item,
       required this.handleDelete,
-        required this.handleEdit,
+      required this.handleEdit,
       required this.index})
       : super(key: key);
   var item;
   var index;
   final Function handleDelete;
   final Function handleEdit;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,9 +21,9 @@ class CardBody extends StatelessWidget {
         height: 70,
         margin: EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
-          color: (index % 2 == 0)
-              ? const Color.fromARGB(255, 78, 234, 211)
-              : const Color.fromARGB(255, 241, 141, 233),
+          gradient: (index % 2 == 0)
+              ? LinearGradient(colors: [Colors.purpleAccent, Colors.pinkAccent])
+              : LinearGradient(colors: [Colors.blue, Colors.cyanAccent]),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
@@ -31,28 +31,35 @@ class CardBody extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                item.name,
-                style: TextStyle(
-                    color: Color(0xff4B4B4B),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                child: Column(
+                  children: [
+                    Text(
+                      item.name,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text("\n" + item.date,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold)),
+                  ],
+                ),
               ),
               Row(
                 children: [
-                  InkWell(
-                    onTap: () async {
-                      if (await confirm(context)) {
-                        handleEdit(item.id);
-                      }
-                      return print("PressedCancel");
-                    },
-                    child: Icon(
-                      Icons.edit_outlined,
-                      color: Color(0xff4B4B4B),
-                      size: 30,
-                    ),
-                  ),
+                  IconButton(onPressed: (){
+                    handleEdit(index, item.name);
+                  }, icon: const Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                    size: 30,
+                  )),
                   InkWell(
                     onTap: () async {
                       if (await confirm(context)) {
@@ -62,7 +69,7 @@ class CardBody extends StatelessWidget {
                     },
                     child: Icon(
                       Icons.delete_outline,
-                      color: Color(0xff4B4B4B),
+                      color: Colors.white,
                       size: 30,
                     ),
                   ),
@@ -73,3 +80,4 @@ class CardBody extends StatelessWidget {
         ));
   }
 }
+
